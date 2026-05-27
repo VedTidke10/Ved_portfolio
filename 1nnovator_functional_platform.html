@@ -1,0 +1,758 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#c7a86b;--gold2:#f1d29a;--bg:#0a0a0b;--bg2:#111113;--bg3:#161618;
+  --glass:rgba(255,255,255,0.04);--gb:rgba(255,255,255,0.08);
+  --text:#f0eeea;--muted:#888780;--dim:#2e2e31;
+  --fn:'Space Grotesk',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--fn);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--fn);cursor:pointer}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:0.5px solid var(--gb);background:rgba(10,10,11,0.92);position:sticky;top:0;z-index:200}
+.logo{font-size:17px;font-weight:700;color:var(--gold);cursor:pointer}.logo span{color:var(--text)}
+.nav-links{display:flex;gap:20px}
+.nav-links button{background:none;border:none;font-size:12px;color:var(--muted);letter-spacing:.3px;padding:4px 0;transition:color .2s}
+.nav-links button:hover,.nav-links button.active{color:var(--text)}
+.nav-links button.active{color:var(--gold);border-bottom:1px solid var(--gold)}
+.nav-actions{display:flex;gap:10px;align-items:center}
+.btn-sm{font-size:11px;font-weight:700;padding:6px 16px;border-radius:6px;letter-spacing:.4px;transition:all .2s}
+.btn-outline{background:transparent;border:0.5px solid var(--gold);color:var(--gold)}
+.btn-outline:hover{background:rgba(199,168,107,.1)}
+.btn-gold{background:var(--gold);border:none;color:#0a0a0b}
+.btn-gold:hover{background:var(--gold2)}
+
+.page{display:none}
+.page.active{display:block}
+
+.hero{position:relative;min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px 40px;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(199,168,107,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(199,168,107,.04) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black 30%,transparent 100%)}
+.hero-orb{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(199,168,107,.1) 0%,transparent 70%);left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2);border:0.5px solid rgba(199,168,107,.3);border-radius:20px;padding:5px 14px;margin-bottom:24px;background:rgba(199,168,107,.06)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--gold2)}
+h1{font-size:clamp(32px,5.5vw,72px);font-weight:700;line-height:1.05;letter-spacing:-2px;margin-bottom:18px;max-width:800px}
+h1 .acc{color:var(--gold)}
+.sub{font-size:clamp(13px,1.6vw,16px);color:var(--muted);max-width:500px;line-height:1.7;margin-bottom:36px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:56px}
+.btn-hero-p{padding:12px 26px;background:var(--gold);color:#0a0a0b;border:none;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.3px;transition:all .2s}
+.btn-hero-p:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-hero-g{padding:12px 26px;background:var(--glass);color:var(--text);border:0.5px solid var(--gb);border-radius:8px;font-size:13px;font-weight:600;transition:all .2s}
+.btn-hero-g:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15)}
+.stats{display:flex;gap:36px;border-top:0.5px solid var(--gb);padding-top:24px;flex-wrap:wrap;justify-content:center}
+.stat .n{font-size:22px;font-weight:700;color:var(--gold);letter-spacing:-1px}
+.stat .l{font-size:10px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-top:2px}
+
+.ticker{background:var(--bg2);border-top:0.5px solid var(--gb);border-bottom:0.5px solid var(--gb);padding:10px 0;overflow:hidden}
+.tick-inner{display:flex;gap:36px;white-space:nowrap;animation:tick 24s linear infinite}
+.tick-item{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.tick-item span{color:var(--gold);margin-right:8px}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.sec{padding:72px 28px;max-width:1080px;margin:0 auto}
+.sec-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.sec-title{font-size:clamp(22px,3vw,40px);font-weight:700;letter-spacing:-1px;line-height:1.1;margin-bottom:12px}
+.sec-sub{font-size:14px;color:var(--muted);max-width:460px;line-height:1.7}
+
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 28px}
+.fchip{font-size:10px;font-weight:700;padding:5px 13px;border-radius:20px;border:0.5px solid var(--gb);color:var(--muted);background:transparent;letter-spacing:.5px;text-transform:uppercase;transition:all .2s}
+.fchip:hover,.fchip.on{border-color:var(--gold);color:var(--gold);background:rgba(199,168,107,.07)}
+
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.pcard{background:var(--bg2);border:0.5px solid var(--gb);border-radius:12px;padding:20px 22px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.pcard:hover{border-color:rgba(199,168,107,.35);transform:translateY(-2px)}
+.pcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.cat-badge{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:4px;border:0.5px solid}
+.c-ai{color:#7dd3fc;border-color:rgba(125,211,252,.3);background:rgba(125,211,252,.07)}
+.c-cl{color:#86efac;border-color:rgba(134,239,172,.3);background:rgba(134,239,172,.07)}
+.c-hh{color:#f9a8d4;border-color:rgba(249,168,212,.3);background:rgba(249,168,212,.07)}
+.c-fn{color:var(--gold2);border-color:rgba(241,210,154,.3);background:rgba(241,210,154,.07)}
+.c-ed{color:#c4b5fd;border-color:rgba(196,181,253,.3);background:rgba(196,181,253,.07)}
+.c-in{color:#94a3b8;border-color:rgba(148,163,184,.3);background:rgba(148,163,184,.07)}
+.c-so{color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.07)}
+.imp{font-size:10px;color:var(--muted)}
+.ptitle{font-size:14px;font-weight:600;margin-bottom:7px;line-height:1.4}
+.pdesc{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.pmeta{display:flex;gap:16px;padding-top:12px;border-top:0.5px solid var(--dim)}
+.pm{display:flex;flex-direction:column;gap:2px}
+.pml{font-size:9px;letter-spacing:.8px;text-transform:uppercase;color:var(--dim);font-weight:700}
+.pmv{font-size:11px;font-weight:700}
+.hard{color:#f87171}.med{color:var(--gold)}.easy{color:#86efac}.mhigh{color:#86efac}
+
+.pcard.expanded{grid-column:1/-1}
+.exp-body{margin-top:16px;padding-top:16px;border-top:0.5px solid var(--dim);display:none}
+.pcard.expanded .exp-body{display:block}
+.exp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
+.exp-box{background:var(--bg3);border:0.5px solid var(--gb);border-radius:8px;padding:14px}
+.exp-box h4{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.exp-box p{font-size:11px;color:var(--muted);line-height:1.6}
+.exp-box ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.exp-box li{font-size:11px;color:var(--muted);padding-left:12px;position:relative}
+.exp-box li::before{content:'→';position:absolute;left:0;color:var(--gold);font-size:9px;top:1px}
+.exp-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.exp-btn{font-size:11px;font-weight:600;padding:7px 16px;border-radius:6px;border:0.5px solid var(--gb);color:var(--text);background:var(--glass);transition:all .2s}
+.exp-btn:hover{border-color:var(--gold);color:var(--gold)}
+.exp-btn.prim{background:var(--gold);color:#0a0a0b;border-color:var(--gold)}
+.exp-btn.prim:hover{background:var(--gold2)}
+
+.dash-wrap{background:var(--bg2);border-top:0.5px solid var(--gb);border-bottom:0.5px solid var(--gb);padding:72px 28px}
+.dash-inner{max-width:1080px;margin:0 auto}
+.dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-top:36px}
+.dcard{background:var(--bg3);border:0.5px solid var(--gb);border-radius:10px;padding:18px 20px}
+.dlbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.dlbl::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.trend-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--glass);border-radius:7px;border:0.5px solid var(--dim);cursor:pointer;transition:border-color .2s;margin-bottom:8px}
+.trend-row:hover{border-color:rgba(199,168,107,.25)}
+.trend-rank{font-size:10px;font-weight:700;color:var(--dim);min-width:18px}
+.trend-txt{flex:1;font-size:12px;font-weight:500}
+.trend-sc{font-size:10px;font-weight:700;color:var(--gold)}
+
+.ai-section{background:var(--bg2);border-top:0.5px solid var(--gb)}
+.ai-inner{max-width:1080px;margin:0 auto;padding:72px 28px}
+.ai-box{background:var(--bg3);border:0.5px solid var(--gb);border-radius:12px;padding:24px;margin-top:32px}
+.ai-input-wrap{display:flex;gap:10px;margin-bottom:12px}
+.ai-input{flex:1;background:var(--bg2);border:0.5px solid var(--gb);border-radius:8px;padding:11px 14px;font-size:13px;color:var(--text);font-family:var(--fn);outline:none;transition:border-color .2s}
+.ai-input:focus{border-color:rgba(199,168,107,.4)}
+.ai-send{padding:11px 20px;background:var(--gold);border:none;border-radius:8px;font-size:12px;font-weight:700;color:#0a0a0b;transition:background .2s}
+.ai-send:hover{background:var(--gold2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.chip{font-size:10px;padding:4px 10px;border:0.5px solid var(--gb);border-radius:20px;color:var(--muted);background:transparent;transition:all .2s}
+.chip:hover{border-color:var(--gold);color:var(--gold)}
+.ai-resp{background:var(--bg2);border:0.5px solid var(--gb);border-radius:8px;padding:14px;min-height:80px;font-size:12px;color:var(--muted);line-height:1.7;display:none}
+.ai-resp.show{display:block}
+.ai-resp .ai-line{color:var(--text);margin-bottom:6px}
+.ai-resp .ai-point{padding-left:14px;position:relative;margin-bottom:4px}
+.ai-resp .ai-point::before{content:'▸';position:absolute;left:0;color:var(--gold)}
+
+.founders-section{padding:72px 28px;max-width:1080px;margin:0 auto}
+.founders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-top:32px}
+.fcard{background:var(--bg2);border:0.5px solid var(--gb);border-radius:10px;padding:18px;text-align:center;cursor:pointer;transition:all .25s}
+.fcard:hover{border-color:rgba(199,168,107,.3);transform:translateY(-2px)}
+.fav{width:48px;height:48px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;border:0.5px solid var(--gb)}
+.fname{font-size:13px;font-weight:600;margin-bottom:3px}
+.frole{font-size:10px;color:var(--muted);margin-bottom:8px;line-height:1.4}
+.ftags{display:flex;gap:3px;justify-content:center;flex-wrap:wrap}
+.ftag{font-size:8px;padding:3px 7px;border-radius:3px;background:var(--glass);border:0.5px solid var(--dim);color:var(--muted);letter-spacing:.4px;text-transform:uppercase;font-weight:600}
+.fstatus{font-size:9px;font-weight:700;letter-spacing:.5px;margin-top:8px;padding:3px 8px;border-radius:4px;display:inline-block}
+.open{background:rgba(134,239,172,.1);color:#86efac;border:0.5px solid rgba(134,239,172,.3)}
+.seeking{background:rgba(241,210,154,.1);color:var(--gold2);border:0.5px solid rgba(241,210,154,.3)}
+
+.challenges-section{background:var(--bg2);border-top:0.5px solid var(--gb);padding:72px 28px}
+.ch-inner{max-width:1080px;margin:0 auto}
+.ch-list{display:flex;flex-direction:column;gap:12px;margin-top:32px}
+.ch-row{background:var(--bg3);border:0.5px solid var(--gb);border-radius:10px;padding:18px 22px;display:flex;align-items:center;gap:18px;cursor:pointer;transition:all .25s}
+.ch-row:hover{border-color:rgba(199,168,107,.3);transform:translateX(3px)}
+.ch-ico{width:38px;height:38px;border-radius:8px;background:var(--glass);border:0.5px solid var(--gb);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.ch-info{flex:1}
+.ch-title{font-size:13px;font-weight:600;margin-bottom:3px}
+.ch-meta{font-size:10px;color:var(--muted)}
+.ch-prize{font-size:16px;font-weight:700;color:var(--gold);letter-spacing:-.5px;flex-shrink:0}
+.pill{font-size:9px;padding:3px 8px;border-radius:4px;font-weight:700;letter-spacing:.5px;flex-shrink:0}
+.pill-live{background:rgba(134,239,172,.1);color:#86efac;border:0.5px solid rgba(134,239,172,.3)}
+.pill-soon{background:rgba(241,210,154,.1);color:var(--gold2);border:0.5px solid rgba(241,210,154,.3)}
+.pill-new{background:rgba(167,139,250,.1);color:#c4b5fd;border:0.5px solid rgba(196,181,253,.3)}
+.cd{font-size:10px;color:var(--muted);flex-shrink:0;text-align:right}
+.cd b{display:block;font-size:12px;font-weight:700;color:var(--text)}
+
+.community-section{padding:72px 28px;max-width:1080px;margin:0 auto}
+.post-list{display:flex;flex-direction:column;gap:12px;margin-top:32px}
+.post{background:var(--bg2);border:0.5px solid var(--gb);border-radius:10px;padding:18px 20px;cursor:pointer;transition:border-color .2s}
+.post:hover{border-color:rgba(199,168,107,.25)}
+.post-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.post-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.post-author{font-size:12px;font-weight:600}
+.post-time{font-size:10px;color:var(--muted);margin-left:auto}
+.post-title{font-size:13px;font-weight:600;margin-bottom:6px}
+.post-body{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.post-footer{display:flex;align-items:center;gap:16px}
+.post-tag{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;border-radius:3px;border:0.5px solid}
+.post-actions{display:flex;gap:12px;margin-left:auto}
+.post-act{font-size:11px;color:var(--muted);background:none;border:none;display:flex;align-items:center;gap:4px;transition:color .2s}
+.post-act:hover{color:var(--text)}
+.post-act.liked{color:var(--gold)}
+
+.profile-page{padding:72px 28px;max-width:800px;margin:0 auto}
+.profile-header{background:var(--bg2);border:0.5px solid var(--gb);border-radius:12px;padding:28px;margin-bottom:20px;display:flex;gap:20px;align-items:flex-start}
+.profile-av-big{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;border:0.5px solid var(--gb);flex-shrink:0}
+.profile-name{font-size:20px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
+.profile-role{font-size:12px;color:var(--muted);margin-bottom:10px}
+.profile-badges{display:flex;gap:6px;flex-wrap:wrap}
+.profile-badge{font-size:9px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:.5px;text-transform:uppercase}
+.pbs1{background:rgba(199,168,107,.12);color:var(--gold);border:0.5px solid rgba(199,168,107,.3)}
+.pbs2{background:rgba(134,239,172,.1);color:#86efac;border:0.5px solid rgba(134,239,172,.3)}
+.pbs3{background:rgba(196,181,253,.1);color:#c4b5fd;border:0.5px solid rgba(196,181,253,.3)}
+.profile-stats{display:flex;gap:24px;margin-top:14px;padding-top:14px;border-top:0.5px solid var(--dim)}
+.ps{text-align:center}
+.ps .n{font-size:18px;font-weight:700;color:var(--gold)}
+.ps .l{font-size:9px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase}
+.profile-sections{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ps-box{background:var(--bg2);border:0.5px solid var(--gb);border-radius:10px;padding:18px}
+.ps-box h3{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.skill-tag{display:inline-block;font-size:10px;padding:4px 10px;border-radius:4px;background:var(--glass);border:0.5px solid var(--gb);color:var(--muted);margin:3px;letter-spacing:.3px}
+.idea-item{padding:8px 0;border-bottom:0.5px solid var(--dim);font-size:11px}
+.idea-item:last-child{border-bottom:none}
+.idea-item .it{font-weight:600;margin-bottom:2px}
+.idea-item .is{color:var(--muted)}
+
+.join-modal-bg{background:rgba(0,0,0,.7);padding:40px 24px;display:flex;align-items:center;justify-content:center;min-height:400px}
+.join-modal{background:var(--bg2);border:0.5px solid var(--gb);border-radius:14px;padding:32px;width:100%;max-width:480px;margin:0 auto}
+.jm-title{font-size:20px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px}
+.jm-sub{font-size:12px;color:var(--muted);margin-bottom:24px}
+.form-row{margin-bottom:14px}
+.form-lbl{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.form-input{width:100%;background:var(--bg3);border:0.5px solid var(--gb);border-radius:7px;padding:10px 14px;font-size:12px;color:var(--text);font-family:var(--fn);outline:none;transition:border-color .2s}
+.form-input:focus{border-color:rgba(199,168,107,.4)}
+.form-select{width:100%;background:var(--bg3);border:0.5px solid var(--gb);border-radius:7px;padding:10px 14px;font-size:12px;color:var(--text);font-family:var(--fn);outline:none;appearance:none}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.join-submit{width:100%;padding:12px;background:var(--gold);border:none;border-radius:8px;font-size:13px;font-weight:700;color:#0a0a0b;margin-top:8px;transition:background .2s}
+.join-submit:hover{background:var(--gold2)}
+.success-msg{text-align:center;padding:32px}
+.success-ico{font-size:48px;margin-bottom:14px}
+.success-title{font-size:18px;font-weight:700;margin-bottom:8px}
+.success-sub{font-size:13px;color:var(--muted);line-height:1.6}
+
+footer{background:var(--bg2);border-top:0.5px solid var(--gb);padding:44px 28px 28px}
+.foot-inner{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:28px}
+.foot-logo{font-size:18px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.foot-tag{font-size:11px;color:var(--muted);max-width:200px;line-height:1.6}
+.foot-col h4{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text);margin-bottom:12px}
+.foot-col a{display:block;font-size:11px;color:var(--muted);margin-bottom:7px;transition:color .2s}
+.foot-col a:hover{color:var(--text)}
+.foot-bottom{max-width:1080px;margin:28px auto 0;padding-top:18px;border-top:0.5px solid var(--dim);display:flex;justify-content:space-between;font-size:10px;color:var(--dim);flex-wrap:wrap;gap:6px}
+</style>
+
+<h2 class="sr-only">1nnovator — Functional startup intelligence platform with real-world problems, AI mentor, founder network and challenges.</h2>
+
+<nav>
+  <div class="logo" onclick="nav('home')">1<span>nnovator</span></div>
+  <div class="nav-links">
+    <button onclick="nav('home')" id="nb-home" class="active">Home</button>
+    <button onclick="nav('problems')" id="nb-problems">Problems</button>
+    <button onclick="nav('mentor')" id="nb-mentor">AI Mentor</button>
+    <button onclick="nav('founders')" id="nb-founders">Founders</button>
+    <button onclick="nav('challenges')" id="nb-challenges">Challenges</button>
+    <button onclick="nav('community')" id="nb-community">Community</button>
+  </div>
+  <div class="nav-actions">
+    <button class="btn-sm btn-outline" onclick="nav('profile')">My Profile</button>
+    <button class="btn-sm btn-gold" onclick="nav('join')">Join Free</button>
+  </div>
+</nav>
+
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-orb"></div>
+    <div class="badge"><div class="dot"></div>Startup Intelligence Platform · 18,000+ Founders</div>
+    <h1>Build startups around<br><span class="acc">problems that</span><br>actually matter.</h1>
+    <p class="sub">1nnovator connects founders with real-world industry challenges, AI-powered startup validation, and a global network of co-builders.</p>
+    <div class="hero-btns">
+      <button class="btn-hero-p" onclick="nav('problems')">Explore Problems →</button>
+      <button class="btn-hero-g" onclick="nav('join')">Join the Innovation Network</button>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n">2,418</div><div class="l">Real Problems</div></div>
+      <div class="stat"><div class="n">18,340</div><div class="l">Founders</div></div>
+      <div class="stat"><div class="n">347</div><div class="l">Startups Launched</div></div>
+      <div class="stat"><div class="n">$2.1M</div><div class="l">Prizes Awarded</div></div>
+    </div>
+  </div>
+  <div class="ticker"><div class="tick-inner" id="ticker-el"></div></div>
+  <div class="dash-wrap">
+    <div class="dash-inner">
+      <div class="sec-lbl">Innovation Dashboard</div>
+      <div class="sec-title">What founders are building right now.</div>
+      <div class="dash-grid">
+        <div class="dcard">
+          <div class="dlbl">Trending problems this week</div>
+          <div id="trend-list"></div>
+        </div>
+        <div>
+          <div class="dcard" style="margin-bottom:14px">
+            <div class="dlbl">Innovation index</div>
+            <div style="font-size:36px;font-weight:700;color:var(--gold);letter-spacing:-2px;margin:4px 0">84</div>
+            <div style="font-size:10px;color:var(--muted)">Ecosystem score · <span style="color:#86efac">↑ +7 this week</span></div>
+          </div>
+          <div class="dcard">
+            <div class="dlbl">Active right now</div>
+            <div style="font-size:24px;font-weight:700;color:var(--text);letter-spacing:-1px;margin:4px 0" id="live-count">1,247</div>
+            <div style="font-size:10px;color:var(--muted)">founders online</div>
+            <div style="height:4px;background:var(--dim);border-radius:2px;margin-top:10px"><div style="width:73%;height:100%;background:var(--gold);border-radius:2px"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-problems" class="page">
+  <div class="sec">
+    <div class="sec-lbl">Problem Discovery Engine</div>
+    <div class="sec-title">Real problems.<br>Real startup opportunities.</div>
+    <p class="sec-sub">Browse 2,418 curated industry challenges. Click any problem to see startup ideas, market analysis, and MVP blueprints.</p>
+    <div class="filter-row" id="prob-filters"></div>
+    <div class="grid-3" id="prob-grid"></div>
+  </div>
+</div>
+
+<div id="page-mentor" class="page">
+  <div class="ai-inner">
+    <div class="sec-lbl">AI Startup Mentor</div>
+    <div class="sec-title">Your Jarvis for startups.</div>
+    <p class="sec-sub">Validate ideas, find market gaps, get MVP blueprints, and predict your startup's potential — powered by AI.</p>
+    <div class="ai-box">
+      <div class="chips" id="mentor-chips"></div>
+      <div class="ai-input-wrap">
+        <input class="ai-input" id="mentor-input" placeholder="Describe your startup idea or problem you want to solve...">
+        <button class="ai-send" onclick="runMentor()">Analyze →</button>
+      </div>
+      <div class="ai-resp" id="mentor-resp"></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-founders" class="page">
+  <div class="founders-section">
+    <div class="sec-lbl">Founder Network</div>
+    <div class="sec-title">Find your co-founder.<br>Build together.</div>
+    <p class="sec-sub">18,000+ founders, engineers, designers and operators from 60+ countries — all building around real problems.</p>
+    <div class="filter-row" id="founder-filters"></div>
+    <div class="founders-grid" id="founders-grid"></div>
+  </div>
+</div>
+
+<div id="page-challenges" class="page">
+  <div class="challenges-section">
+    <div class="ch-inner">
+      <div class="sec-lbl">Challenges & Hackathons</div>
+      <div class="sec-title">Compete. Build. Win.</div>
+      <p class="sec-sub">Open innovation challenges sponsored by leading companies, governments and VCs. Real prizes, real mentorship.</p>
+      <div class="ch-list" id="challenges-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-community" class="page">
+  <div class="community-section">
+    <div class="sec-lbl">Community</div>
+    <div class="sec-title">Founder discussions.<br>Real insights.</div>
+    <p class="sec-sub">Startup stories, market research, co-founder searches, and hard-won lessons from builders worldwide.</p>
+    <div style="display:flex;gap:10px;margin:18px 0 28px;flex-wrap:wrap" id="comm-filters"></div>
+    <div class="post-list" id="post-list"></div>
+  </div>
+</div>
+
+<div id="page-profile" class="page">
+  <div class="profile-page">
+    <div class="sec-lbl">Your Profile</div>
+    <div class="profile-header">
+      <div class="profile-av-big" style="background:rgba(199,168,107,.12);color:var(--gold)">YO</div>
+      <div style="flex:1">
+        <div class="profile-name">Your Name</div>
+        <div class="profile-role">Founder & Builder · 1nnovator Member</div>
+        <div class="profile-badges">
+          <span class="profile-badge pbs1">Innovator</span>
+          <span class="profile-badge pbs2">Builder</span>
+          <span class="profile-badge pbs3">Problem Solver</span>
+        </div>
+        <div class="profile-stats">
+          <div class="ps"><div class="n">0</div><div class="l">Problems Saved</div></div>
+          <div class="ps"><div class="n">0</div><div class="l">Ideas Generated</div></div>
+          <div class="ps"><div class="n">0</div><div class="l">Connections</div></div>
+          <div class="ps"><div class="n">0</div><div class="l">Day Streak</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="profile-sections">
+      <div class="ps-box">
+        <h3>Your Skills</h3>
+        <div>
+          <span class="skill-tag">Add skills →</span>
+        </div>
+        <div style="margin-top:12px">
+          <button class="exp-btn" onclick="nav('join')">Complete Profile →</button>
+        </div>
+      </div>
+      <div class="ps-box">
+        <h3>Saved Ideas</h3>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6">No ideas saved yet. Explore problems and save the ones that excite you.</div>
+        <div style="margin-top:12px">
+          <button class="exp-btn" onclick="nav('problems')">Explore Problems →</button>
+        </div>
+      </div>
+      <div class="ps-box">
+        <h3>Innovation Score</h3>
+        <div style="font-size:32px;font-weight:700;color:var(--gold);letter-spacing:-1px;margin:8px 0">—</div>
+        <div style="font-size:11px;color:var(--muted)">Complete your profile and start building to earn your score.</div>
+      </div>
+      <div class="ps-box">
+        <h3>Co-founder Status</h3>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:12px">Set your status so other founders can find you for collaboration.</div>
+        <button class="exp-btn prim" onclick="nav('founders')">Browse Founders →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-join" class="page">
+  <div class="join-modal-bg">
+    <div class="join-modal" id="join-form-wrap">
+      <div class="jm-title">Join 1nnovator</div>
+      <div class="jm-sub">Create your founder profile and start building around problems that matter.</div>
+      <div class="form-grid">
+        <div class="form-row"><label class="form-lbl">First Name</label><input class="form-input" id="jf-first" placeholder="Priya"></div>
+        <div class="form-row"><label class="form-lbl">Last Name</label><input class="form-input" id="jf-last" placeholder="Mehta"></div>
+      </div>
+      <div class="form-row"><label class="form-lbl">Email</label><input class="form-input" id="jf-email" placeholder="you@email.com" type="email"></div>
+      <div class="form-row"><label class="form-lbl">Role</label>
+        <select class="form-select form-input" id="jf-role">
+          <option>Founder / CEO</option><option>Engineer / Developer</option><option>Designer</option><option>Product Manager</option><option>Business / Growth</option><option>Student</option><option>Investor</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-row"><label class="form-lbl">Primary Interest</label>
+        <select class="form-select form-input" id="jf-interest">
+          <option>AI / Machine Learning</option><option>Climate Tech</option><option>Healthcare</option><option>FinTech</option><option>EdTech</option><option>Social Impact</option><option>Developer Tools</option><option>Consumer</option>
+        </select>
+      </div>
+      <div class="form-row"><label class="form-lbl">City / Country</label><input class="form-input" id="jf-location" placeholder="Bangalore, India"></div>
+      <button class="join-submit" onclick="submitJoin()">Create My Profile →</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <div>
+      <div class="foot-logo">1nnovator</div>
+      <div class="foot-tag">Where the next generation of founders and innovators are built.</div>
+    </div>
+    <div class="foot-col">
+      <h4>Platform</h4>
+      <a onclick="nav('problems')">Problem Explorer</a>
+      <a onclick="nav('mentor')">AI Mentor</a>
+      <a onclick="nav('challenges')">Challenges</a>
+      <a onclick="nav('founders')">Founder Network</a>
+    </div>
+    <div class="foot-col">
+      <h4>Community</h4>
+      <a onclick="nav('community')">Discussions</a>
+      <a onclick="nav('challenges')">Hackathons</a>
+      <a onclick="nav('community')">Startup Stories</a>
+    </div>
+    <div class="foot-col">
+      <h4>Company</h4>
+      <a>About</a><a>Blog</a><a>Careers</a><a>Contact</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2025 1nnovator. Built for the next generation of founders.</span>
+    <span>Made with ambition. Powered by real problems.</span>
+  </div>
+</footer>
+
+<script>
+const CATS=['All','AI/ML','Climate','Health','FinTech','EdTech','Infrastructure','Social'];
+const PROBLEMS=[
+  {id:0,cat:'AI/ML',title:'Hallucination detection in production LLMs',desc:'Large language models deployed in enterprise settings produce confident wrong answers at a rate of 5–15%. There are no reliable, real-time guardrail systems that work across model providers without slowing latency by >50ms. The problem costs Fortune 500 companies an estimated $50B/year in bad AI-generated decisions.',impact:5,diff:'Hard',market:'$18B',score:9.4,ideas:['Real-time semantic consistency checker as API middleware','Fine-tuned "fact verifier" model that scores LLM outputs','Browser extension that flags AI-generated misinformation'],mvp:'API middleware layer that sits between LLM and application, scores each response for factual consistency using a lightweight cross-encoder model.',biz:'Per-API-call pricing ($0.001–0.005/call) + enterprise SLA contracts. B2B SaaS with usage tiers.',stack:'Python, FastAPI, HuggingFace Transformers, Redis, Kubernetes'},
+  {id:1,cat:'Climate',title:'Voluntary carbon credit fraud & verification crisis',desc:'The voluntary carbon market hit $2B in 2021 but collapsed in credibility after investigations revealed that 90%+ of Verra-certified rainforest credits had no measurable impact. Buyers have no independent way to verify additionality, permanence, or baseline calculations. Companies face greenwashing liability.',impact:5,diff:'Medium',market:'$50B',score:8.7,ideas:['On-chain carbon credit registry with satellite verification','AI model that predicts deforestation baselines from satellite imagery','Independent third-party audit marketplace for offset projects'],mvp:'Satellite imagery pipeline (Sentinel-2) + ML model that measures forest canopy change over time and compares against claimed offsets.',biz:'Verification-as-a-service at $0.50–2.00 per tonne verified + corporate SaaS dashboards for ESG reporting.',stack:'Python, Google Earth Engine, PyTorch, PostgreSQL, Ethereum'},
+  {id:2,cat:'Health',title:'Rural diagnostic access gap — 3.5B people unserved',desc:'Over 3.5 billion people lack access to basic diagnostics. In sub-Saharan Africa, the ratio of pathologists to patients is 1:500,000. The WHO estimates that 70% of clinical decisions depend on diagnostics, yet most rural clinics rely on clinical judgment alone. Misdiagnosis costs 2M+ preventable deaths/year.',impact:5,diff:'Hard',market:'$32B',score:9.1,ideas:['AI-powered smartphone diagnostic app for primary care workers','Low-cost portable blood analyser with cloud AI interpretation','WhatsApp-based triage bot for community health workers'],mvp:'Android app that uses phone camera + low-cost attachment to analyse blood smear slides for malaria, anemia, and WBC count with >85% accuracy.',biz:'Hardware at cost + $5/month per clinic subscription for AI interpretation and case management.',stack:'TensorFlow Lite, Android SDK, AWS Lambda, React Native'},
+  {id:3,cat:'FinTech',title:'82% of SMEs fail due to preventable cashflow issues',desc:'The UK Federation of Small Businesses reports that 50,000 small businesses close each year due to late payments and cashflow crises — not profitability. Despite open banking APIs (PSD2 in EU, CDR in Australia), no tool provides real-time predictive cashflow forecasting that integrates with accounting software, invoicing, and bank feeds simultaneously.',impact:4,diff:'Easy',market:'$12B',score:8.2,ideas:['Real-time cashflow dashboard with 90-day AI forecast','Invoice factoring marketplace with instant liquidity scoring','WhatsApp bot for daily cashflow alerts to SME owners'],mvp:'Plaid + Xero integration that pulls live transaction data and trains an LSTM model on 12 months of history to forecast 90-day cashflow with uncertainty bands.',biz:'$29–99/month SaaS per business. Upsell: embedded invoice financing at 1.5–3% fee.',stack:'Node.js, Plaid API, Xero API, Python, PostgreSQL, TensorFlow'},
+  {id:4,cat:'EdTech',title:'30 students, 1 teacher — personalised learning is impossible at scale',desc:'UNESCO data shows 300M students globally are below minimum reading/math proficiency despite being in school. The root cause: teachers cannot diagnose individual learning gaps across 30+ students. Existing EdTech (Duolingo, Khan Academy) solves self-directed learning but not in-classroom diagnosis for overburdened public school teachers.',impact:5,diff:'Medium',market:'$8B',score:7.9,ideas:['5-minute daily diagnostic tool that maps each student\'s gap','AI teaching assistant that generates differentiated worksheets','Parent-facing app that mirrors in-class learning gaps at home'],mvp:'15-question adaptive daily quiz for students aged 8–14 that maps gaps to a skills graph and generates teacher-facing heatmap reports.',biz:'$3–8/student/month. B2B2C through school district contracts. Freemium for individual teachers.',stack:'React, Node.js, PostgreSQL, Python IRT models, Twilio for SMS reports'},
+  {id:5,cat:'Infrastructure',title:'$300K/hour: the true cost of unplanned cloud outages',desc:'Gartner estimates average unplanned downtime costs $5,600/minute. Yet 73% of enterprise outage post-mortems cite "should have been caught earlier." Current APM tools (Datadog, New Relic) detect anomalies reactively — alerting after the incident starts. No tool accurately predicts outages 10–30 minutes in advance using cross-service causality graphs.',impact:4,diff:'Hard',market:'$6B',score:8.0,ideas:['Causal graph-based predictive failure detection agent','AIOps platform that simulates blast radius before deploy','Slack-native incident prediction bot with runbook automation'],mvp:'Agent that ingests CloudWatch/Datadog metrics and builds a Granger causality graph between services, then flags anomalous causal chains 15 mins before threshold breach.',biz:'$0.10/host/month + enterprise contracts from $30K/year. Compete on prediction lead time, not detection.',stack:'Python, Kafka, Apache Flink, Neo4j, AWS, Prometheus'},
+  {id:6,cat:'Social',title:'1.1B people have no legal identity — locked out of the economy',desc:'The World Bank estimates 1.1 billion people lack a legally recognised identity document, preventing access to banking, healthcare, education, and voting. 45% are children under 5. Existing digital ID projects (India Aadhaar, Estonia e-ID) are government-led but no scalable civil-society-led solution exists for cross-border refugees and stateless populations.',impact:5,diff:'Hard',market:'$4B',score:8.5,ideas:['Biometric digital ID wallet for refugees using zero-knowledge proofs','Community-vouching identity system on-chain','NGO-facing SDK that adds portable ID verification to aid apps'],mvp:'Mobile app that creates a self-sovereign identity using facial biometrics + community attestation, compatible with W3C DID standard and verifiable by partner NGOs offline.',biz:'B2B2C — license to UNHCR, Red Cross, government ministries at $1–2 per registered user. Grant-funded initial pilots.',stack:'React Native, Hyperledger Indy, TensorFlow Lite, IPFS'},
+  {id:7,cat:'AI/ML',title:'AI-generated code ships with critical security vulnerabilities at 40% rate',desc:'Stanford research (2023) showed 40% of code suggestions from GitHub Copilot contained at least one CWE-listed vulnerability when used by non-security-trained developers. The average cost of a data breach from insecure code is $4.45M (IBM 2023). No tool currently provides real-time, context-aware security review integrated directly into the LLM code generation loop.',impact:4,diff:'Medium',market:'$9B',score:9.0,ideas:['VS Code extension that security-audits AI suggestions inline','LLM fine-tuned on CVE database to refuse insecure code generation','CI/CD security gate that traces vulnerabilities back to AI-generated lines'],mvp:'VS Code extension using CodeQL + GPT-4 to classify suggested code snippets by OWASP Top 10 risk category and suggest secure alternatives inline, <500ms latency.',biz:'Freemium VS Code extension + $15/developer/month Pro. Enterprise: $5K/month for org-wide policy enforcement.',stack:'TypeScript, VS Code API, CodeQL, Python, OpenAI API, GitHub Actions'},
+  {id:8,cat:'Climate',title:'Food waste: 1/3 of all food produced is lost before consumption',desc:'The FAO estimates 1.3 billion tonnes of food — one-third of global production — is lost or wasted each year, responsible for 8–10% of global greenhouse gas emissions. In developed markets, 40% of waste happens at retail and consumer level due to poor demand forecasting. UK supermarkets alone waste £3.5B of food annually.',impact:5,diff:'Medium',market:'$14B',score:8.3,ideas:['AI demand forecasting for supermarket fresh produce','Consumer app that monetises near-expiry food at a discount','B2B food redistribution marketplace linking retailers to food banks'],mvp:'API integration with EPOS systems + ML demand forecast trained on POS data, weather, and local events to reduce over-ordering by 20–30% for fresh produce categories.',biz:'SaaS: $500–2,000/store/month based on store revenue. Upsell: dynamic pricing engine for markdown automation.',stack:'Python, FastAPI, scikit-learn, PostgreSQL, Kafka, REST APIs'},
+  {id:9,cat:'Health',title:'Mental health crisis: 75% of people with disorders receive no treatment',desc:'WHO data: 75% of people with mental health disorders in low/middle-income countries receive no treatment. Even in high-income countries, average delay between symptom onset and treatment is 11 years. Primary barriers: stigma, cost ($200+/session), and supply shortage (shortage of 1.18M mental health workers globally by 2030).',impact:5,diff:'Medium',market:'$25B',score:8.8,ideas:['AI-powered mental health first-response triage chatbot','Peer support marketplace that trains and certifies lived-experience counsellors','Employer-facing mental health analytics platform'],mvp:'Evidence-based CBT chatbot using PHQ-9/GAD-7 validated screening, stepped-care model that triages to human therapist when severity requires, with outcome tracking.',biz:'B2B: $4–10/employee/month via employer benefits. Consumer: $20/month. License clinical protocols to insurers.',stack:'React Native, Node.js, OpenAI API, PostgreSQL, HIPAA-compliant AWS'},
+];
+
+const FOUNDERS=[
+  {init:'PG',name:'Paul Graham',role:'Essayist & Seed Investor',loc:'San Francisco, USA',skills:['Writing','Lisp','Investing'],status:'open',color:'rgba(199,168,107,.15)',textColor:var_gold()},
+  {init:'AG',name:'Austen Allred',role:'Founder, BloomTech',loc:'Utah, USA',skills:['EdTech','B2C','ISAs'],status:'seeking',color:'rgba(125,211,252,.12)',textColor:'#7dd3fc'},
+  {init:'PT',name:'Patrick & John Collison',role:'Founders, Stripe',loc:'San Francisco, USA',skills:['FinTech','Payments','Scale'],status:'open',color:'rgba(134,239,172,.12)',textColor:'#86efac'},
+  {init:'NR',name:'Nikita Bier',role:'Serial Founder (Gas, TBH)',loc:'New York, USA',skills:['Consumer','Growth','Mobile'],status:'seeking',color:'rgba(196,181,253,.12)',textColor:'#c4b5fd'},
+  {init:'SM',name:'Shivani Siroya',role:'Founder, Tala (FinTech)',loc:'Los Angeles, USA',skills:['FinTech','Emerging Markets','ML'],status:'open',color:'rgba(251,146,60,.12)',textColor:'#fb923c'},
+  {init:'AJ',name:'Adora Cheung',role:'Partner, YC (ex-Homejoy)',loc:'San Francisco, USA',skills:['Marketplaces','Ops','B2C'],status:'open',color:'rgba(249,168,212,.12)',textColor:'#f9a8d4'},
+  {init:'MN',name:'Melanie Perkins',role:'Founder, Canva',loc:'Sydney, Australia',skills:['Design','PLG','SaaS'],status:'seeking',color:'rgba(199,168,107,.12)',textColor:var_gold()},
+  {init:'BM',name:'Brian Chesky',role:'Founder, Airbnb',loc:'San Francisco, USA',skills:['Marketplaces','Design','Brand'],status:'open',color:'rgba(125,211,252,.12)',textColor:'#7dd3fc'},
+  {init:'PS',name:'Puja Sangar',role:'Founder, HealthTech startup',loc:'London, UK',skills:['Health','ML','React'],status:'open',color:'rgba(134,239,172,.12)',textColor:'#86efac'},
+  {init:'RN',name:'Rahim Noorani',role:'ML Engineer → Founder',loc:'Bangalore, India',skills:['AI/ML','Python','LLMs'],status:'seeking',color:'rgba(196,181,253,.12)',textColor:'#c4b5fd'},
+  {init:'ZA',name:'Zara Ahmed',role:'Climate Tech Builder',loc:'Dubai, UAE',skills:['Climate','Product','GTM'],status:'open',color:'rgba(251,146,60,.12)',textColor:'#fb923c'},
+  {init:'TL',name:'Tunde Leke',role:'Founder, AgriTech Africa',loc:'Lagos, Nigeria',skills:['AgriTech','Mobile','B2B'],status:'seeking',color:'rgba(249,168,212,.12)',textColor:'#f9a8d4'},
+];
+function var_gold(){return '#c7a86b'}
+
+const CHALLENGES=[
+  {ico:'🌍',title:'Climate AI Grand Challenge 2025',org:'McKinsey & Google.org',meta:'342 submissions · Open globally · Solo & Teams',status:'live',deadline:'14d 06h',prize:'$50,000'},
+  {ico:'🏥',title:'HealthTech Builders Sprint',org:'Bill & Melinda Gates Foundation',meta:'178 submissions · Healthcare & MedTech · 40 countries',status:'live',deadline:'7d 12h',prize:'$25,000'},
+  {ico:'🤖',title:'AI for Good Grand Hackathon',org:'Anthropic × Stripe',meta:'Launching in 3 weeks · All skill levels · Global',status:'soon',deadline:'21d 00h',prize:'$100,000'},
+  {ico:'💰',title:'Financial Inclusion Fintech Sprint',org:'IFC × Y Combinator',meta:'Open to emerging market founders',status:'new',deadline:'Opens Jun 10',prize:'$35,000'},
+  {ico:'📚',title:'EdTech Innovation Prize 2025',org:'Chan Zuckerberg Initiative',meta:'K-12 learning & teacher tools focus',status:'soon',deadline:'30d',prize:'$20,000'},
+  {ico:'🔒',title:'Secure AI Code Challenge',org:'GitHub × OpenAI Security',meta:'Dev tools & LLM security category',status:'live',deadline:'5d 08h',prize:'$15,000'},
+];
+
+const POSTS=[
+  {init:'KG',name:'Kunal Gupta',time:'2h ago',title:'I cold-emailed 200 rural clinic directors in Kenya. Here\'s what I learned about the diagnostics gap.',body:'After 6 weeks of outreach and 34 actual conversations, the real problem is not hardware cost — it\'s the broken referral chain. Clinics have phones. What they lack is a system to know when to refer.',tag:'Research',tagCol:'c-hh',likes:142,comments:28,liked:false},
+  {init:'SC',name:'Sarah Chen',time:'5h ago',title:'We\'re building a carbon credit verification layer. AMA — we just closed $1.2M pre-seed.',body:'Spent 18 months obsessing over the voluntary carbon market collapse after the Verra scandal. The thesis: verification needs to be satellite-native, not paper-native. Happy to share what we know.',tag:'Story',tagCol:'c-cl',likes:287,comments:61,liked:false},
+  {init:'MO',name:'Marcus Osei',time:'1d ago',title:'Seeking technical co-founder — SME cashflow AI. We have 12 paying beta customers.',body:'I\'m a CFA with 8 years in SME lending at Barclays. I can sell. I have the market access. I need a full-stack engineer who has shipped financial products before. Nigeria / UK / Remote.',tag:'Co-founder',tagCol:'c-fn',likes:93,comments:47,liked:false},
+  {init:'DR',name:'Divya Rajan',time:'2d ago',title:'The mental health treatment gap in India is worse than any statistic captures.',body:'I ran a 3-month study across 400 semi-urban households in Maharashtra. 68% of respondents knew someone with symptoms they\'d describe as depression or anxiety. 4% had ever seen a mental health professional. The stigma data is heartbreaking.',tag:'Research',tagCol:'c-hh',likes:334,comments:89,liked:false},
+  {init:'LP',name:'Leo Park',time:'3d ago',title:'GitHub Copilot shipped insecure code into our production app. Here\'s the postmortem.',body:'We caught a SQL injection vulnerability in AI-generated code 2 weeks post-launch. The code looked perfectly fine to our team. This is the problem nobody is solving: LLMs don\'t know your security context.',tag:'Analysis',tagCol:'c-ai',likes:521,comments:134,liked:false},
+];
+
+const MENTOR_PROMPTS=[
+  {label:'Validate my idea',text:'Validate this startup idea: '},
+  {label:'Find market gaps',text:'What are the biggest unaddressed market gaps in '},
+  {label:'MVP blueprint',text:'Give me an MVP blueprint for '},
+  {label:'Monetization models',text:'What are the best monetization models for '},
+  {label:'Find co-founder profile',text:'What kind of co-founder should I look for if I\'m building '},
+];
+
+const MENTOR_RESPONSES={
+  default:[
+    {type:'line',text:'Analysis complete. Here\'s what the data says:'},
+    {type:'point',text:'Market validation: This space has demonstrated demand signals based on the problem description.'},
+    {type:'point',text:'Competitive landscape: Several incumbents exist but none have nailed the core pain point you\'re targeting.'},
+    {type:'point',text:'Recommended MVP approach: Start with a single user segment and one core workflow before expanding.'},
+    {type:'point',text:'Monetization: B2B SaaS with usage-based pricing tends to work best for this category.'},
+    {type:'point',text:'Critical risk: Distribution. Most startups in this space fail from lack of go-to-market, not product.'},
+    {type:'line',text:'Investor readiness score: 6.2 / 10 — you need customer validation data before pitching seed.'},
+  ]
+};
+
+function nav(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active'));
+  const nb=document.getElementById('nb-'+page);
+  if(nb)nb.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function buildTicker(){
+  const items=['AI Opportunities','Climate Tech','Healthcare Gaps','EdTech Failures','FinTech Problems','Social Impact','B2B Inefficiencies','Developer Security','Food Waste','Mental Health','Identity Crisis','Carbon Markets'];
+  const el=document.getElementById('ticker-el');
+  const all=[...items,...items];
+  el.innerHTML=all.map(i=>`<div class="tick-item"><span>◆</span>${i}</div>`).join('');
+}
+
+function buildTrends(){
+  const trends=[
+    {rank:'#1',text:'AI agent observability & runtime monitoring',sc:'↑ 94'},
+    {rank:'#2',text:'Longevity biotech — consumer-facing diagnostics',sc:'↑ 87'},
+    {rank:'#3',text:'Climate adaptation infrastructure for cities',sc:'↑ 81'},
+    {rank:'#4',text:'Vertical AI SaaS for trade / skilled labour',sc:'↑ 76'},
+    {rank:'#5',text:'Real-time mental health triage & step-down care',sc:'↑ 70'},
+  ];
+  document.getElementById('trend-list').innerHTML=trends.map(t=>`
+    <div class="trend-row" onclick="nav('problems')">
+      <div class="trend-rank">${t.rank}</div>
+      <div class="trend-txt">${t.text}</div>
+      <div class="trend-sc">${t.sc}</div>
+    </div>`).join('');
+}
+
+function buildProblems(filter){
+  const cats=['All','AI/ML','Climate','Health','FinTech','EdTech','Infrastructure','Social'];
+  const el=document.getElementById('prob-filters');
+  el.innerHTML=cats.map(c=>`<button class="fchip${(!filter&&c==='All')||filter===c?' on':''}" onclick="buildProblems('${c}')">${c}</button>`).join('');
+  const list=filter&&filter!=='All'?PROBLEMS.filter(p=>p.cat===filter):PROBLEMS;
+  const grid=document.getElementById('prob-grid');
+  grid.innerHTML=list.map(p=>`
+    <div class="pcard" id="pc-${p.id}">
+      <div class="pcard-top"><span class="cat-badge ${catClass(p.cat)}">${p.cat}</span><span class="imp">${'●'.repeat(p.impact)}${'○'.repeat(5-p.impact)}</span></div>
+      <div class="ptitle">${p.title}</div>
+      <div class="pdesc">${p.desc.substring(0,140)}...</div>
+      <div class="pmeta">
+        <div class="pm"><div class="pml">Difficulty</div><div class="pmv ${diffClass(p.diff)}">${p.diff}</div></div>
+        <div class="pm"><div class="pml">Market</div><div class="pmv mhigh">${p.market}</div></div>
+        <div class="pm"><div class="pml">Fit Score</div><div class="pmv" style="color:var(--gold)">★ ${p.score}</div></div>
+      </div>
+      <div class="exp-body" id="exp-${p.id}">
+        <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px">${p.desc}</p>
+        <div class="exp-grid">
+          <div class="exp-box"><h4>Startup Ideas</h4><ul>${p.ideas.map(i=>`<li>${i}</li>`).join('')}</ul></div>
+          <div class="exp-box"><h4>MVP Blueprint</h4><p>${p.mvp}</p></div>
+          <div class="exp-box"><h4>Business Model</h4><p>${p.biz}</p><div style="margin-top:8px"><div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.8px;font-weight:700;margin-bottom:4px">Suggested Stack</div><div style="font-size:10px;color:var(--muted)">${p.stack}</div></div></div>
+        </div>
+        <div class="exp-actions">
+          <button class="exp-btn prim" onclick="openMentor('${p.title.replace(/'/g,"\\'")}')">Analyze with AI Mentor →</button>
+          <button class="exp-btn" onclick="saveIdea(${p.id})">Save Idea</button>
+          <button class="exp-btn" onclick="findCofound('${p.cat}')">Find Co-founder</button>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding-top:12px;border-top:0.5px solid var(--dim);display:flex;justify-content:space-between;align-items:center">
+        <button class="exp-btn" style="font-size:10px;padding:5px 12px" onclick="toggleExpand(${p.id})">Explore opportunity →</button>
+        <span style="font-size:10px;color:var(--dim)">12 founders exploring</span>
+      </div>
+    </div>`).join('');
+}
+
+function toggleExpand(id){
+  const card=document.getElementById('pc-'+id);
+  const body=document.getElementById('exp-'+id);
+  const btn=card.querySelector('.exp-btn');
+  if(card.classList.contains('expanded')){
+    card.classList.remove('expanded');
+    body.style.display='none';
+    btn.textContent='Explore opportunity →';
+  } else {
+    card.classList.add('expanded');
+    body.style.display='block';
+    btn.textContent='Collapse ↑';
+  }
+}
+
+function catClass(cat){
+  const m={'AI/ML':'c-ai','Climate':'c-cl','Health':'c-hh','FinTech':'c-fn','EdTech':'c-ed','Infrastructure':'c-in','Social':'c-so'};
+  return m[cat]||'c-in';
+}
+function diffClass(d){return d==='Hard'?'hard':d==='Medium'?'med':'easy'}
+
+function buildFounders(filter){
+  const skills=['All','AI/ML','FinTech','Climate','Health','EdTech','Mobile'];
+  const el=document.getElementById('founder-filters');
+  el.innerHTML=skills.map(s=>`<button class="fchip${(!filter&&s==='All')||filter===s?' on':''}" onclick="buildFounders('${s}')">${s}</button>`).join('');
+  const grid=document.getElementById('founders-grid');
+  grid.innerHTML=FOUNDERS.map(f=>`
+    <div class="fcard" onclick="connectFounder('${f.name}')">
+      <div class="fav" style="background:${f.color};color:${f.textColor}">${f.init}</div>
+      <div class="fname">${f.name}</div>
+      <div class="frole">${f.role}<br><span style="font-size:9px;color:var(--dim)">${f.loc}</span></div>
+      <div class="ftags">${f.skills.map(s=>`<span class="ftag">${s}</span>`).join('')}</div>
+      <div class="fstatus ${f.status==='open'?'open':'seeking'}">${f.status==='open'?'Open to connect':'Seeking co-founder'}</div>
+    </div>`).join('');
+}
+
+function buildChallenges(){
+  document.getElementById('challenges-list').innerHTML=CHALLENGES.map(c=>`
+    <div class="ch-row" onclick="joinChallenge('${c.title.replace(/'/g,"\\'")}')">
+      <div class="ch-ico">${c.ico}</div>
+      <div class="ch-info">
+        <div class="ch-title">${c.title}</div>
+        <div class="ch-meta">${c.org} · ${c.meta}</div>
+      </div>
+      <span class="pill pill-${c.status==='live'?'live':c.status==='soon'?'soon':'new'}">${c.status==='live'?'Live':c.status==='soon'?'Coming Soon':'New'}</span>
+      <div class="cd"><b>${c.deadline}</b>${c.status==='live'?'remaining':c.status==='soon'?'to launch':'opens'}</div>
+      <div class="ch-prize">${c.prize}</div>
+    </div>`).join('');
+}
+
+function buildCommunity(filter){
+  const tags=['All','Research','Story','Co-founder','Analysis'];
+  const el=document.getElementById('comm-filters');
+  el.innerHTML=tags.map(t=>`<button class="fchip${(!filter&&t==='All')||filter===t?' on':''}" onclick="buildCommunity('${t}')">${t}</button>`).join('');
+  const list=filter&&filter!=='All'?POSTS.filter(p=>p.tag===filter):POSTS;
+  document.getElementById('post-list').innerHTML=list.map((p,i)=>`
+    <div class="post">
+      <div class="post-top">
+        <div class="post-av" style="background:rgba(199,168,107,.15);color:var(--gold)">${p.init}</div>
+        <div style="display:flex;flex-direction:column"><div class="post-author">${p.name}</div></div>
+        <div class="post-time">${p.time}</div>
+      </div>
+      <div class="post-title">${p.title}</div>
+      <div class="post-body">${p.body}</div>
+      <div class="post-footer">
+        <span class="post-tag ${catClass2(p.tagCol)}">${p.tag}</span>
+        <div class="post-actions">
+          <button class="post-act${p.liked?' liked':''}" id="like-${i}" onclick="toggleLike(${i})">
+            <i class="ti ti-heart" style="font-size:14px"></i> <span id="lc-${i}">${p.likes}</span>
+          </button>
+          <button class="post-act"><i class="ti ti-message" style="font-size:14px"></i> ${p.comments}</button>
+          <button class="post-act"><i class="ti ti-share" style="font-size:14px"></i></button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function catClass2(col){
+  const m={'c-ai':'c-ai','c-cl':'c-cl','c-hh':'c-hh','c-fn':'c-fn','c-ed':'c-ed','c-in':'c-in','c-so':'c-so'};
+  return m[col]||'c-in';
+}
+
+function toggleLike(i){
+  POSTS[i].liked=!POSTS[i].liked;
+  POSTS[i].likes+=POSTS[i].liked?1:-1;
+  buildCommunity();
+}
+
+function buildMentor(){
+  document.getElementById('mentor-chips').innerHTML=MENTOR_PROMPTS.map(p=>`<button class="chip" onclick="setMentorPrompt('${p.text.replace(/'/g,"\\'")}', '${p.label}')">${p.label}</button>`).join('');
+  document.getElementById('mentor-input').onkeydown=function(e){if(e.key==='Enter')runMentor();};
+}
+
+function setMentorPrompt(text,label){
+  const inp=document.getElementById('mentor-input');
+  inp.value=text;
+  inp.focus();
+}
+
+function runMentor(){
+  const inp=document.getElementById('mentor-input').value.trim();
+  if(!inp)return;
+  const resp=document.getElementById('mentor-resp');
+  resp.classList.add('show');
+  resp.innerHTML='<div style="color:var(--gold);font-size:11px;margin-bottom:10px">Analyzing: "'+inp+'"</div>';
+  const lines=MENTOR_RESPONSES.default;
+  let i=0;
+  const timer=setInterval(()=>{
+    if(i>=lines.length){clearInterval(timer);return;}
+    const l=lines[i];
+    const div=document.createElement('div');
+    div.className=l.type==='line'?'ai-line':'ai-point';
+    div.textContent=l.text;
+    resp.appendChild(div);
+    i++;
+  },300);
+}
+
+function openMentor(title){
+  nav('mentor');
+  document.getElementById('mentor-input').value='Give me a full startup analysis for: '+title;
+  setTimeout(runMentor,400);
+}
+
+function connectFounder(name){
+  sendPrompt('I want to connect with '+name+' on 1nnovator. How should I reach out?');
+}
+function joinChallenge(title){
+  sendPrompt('I want to enter the "'+title+'" challenge on 1nnovator. What are the requirements and how do I submit?');
+}
+function saveIdea(id){
+  const p=PROBLEMS[id];
+  sendPrompt('Save this problem to my 1nnovator profile: "'+p.title+'". Also give me a 3-step action plan to start building this startup this week.');
+}
+function findCofound(cat){nav('founders');buildFounders(cat);}
+
+function submitJoin(){
+  const first=document.getElementById('jf-first').value.trim();
+  const last=document.getElementById('jf-last').value.trim();
+  const email=document.getElementById('jf-email').value.trim();
+  if(!first||!last||!email){
+    alert('Please fill in your name and email.');return;
+  }
+  document.getElementById('join-form-wrap').innerHTML=`
+    <div class="success-msg">
+      <div class="success-ico">🚀</div>
+      <div class="success-title">Welcome to 1nnovator, ${first}!</div>
+      <div class="success-sub">Your founder profile has been created. You're now part of a global network of 18,000+ innovators building startups around problems that actually matter.</div>
+      <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="exp-btn prim" onclick="nav('problems')">Explore Problems →</button>
+        <button class="exp-btn" onclick="nav('founders')">Find Co-founders →</button>
+      </div>
+    </div>`;
+}
+
+buildTicker();
+buildTrends();
+buildProblems();
+buildFounders();
+buildChallenges();
+buildCommunity();
+buildMentor();
+
+setInterval(()=>{
+  const el=document.getElementById('live-count');
+  if(el){el.textContent=(1200+Math.floor(Math.random()*100)).toLocaleString();}
+},5000);
+</script>
