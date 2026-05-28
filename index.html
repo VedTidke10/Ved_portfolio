@@ -1756,12 +1756,122 @@
       animation: floatY 6s ease-in-out infinite
     }
 
+    /* ── MOBILE MENU & HAMBURGER TOGGLE ── */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 1001;
+      padding: 0;
+    }
+    
+    .nav-toggle .bar {
+      width: 100%;
+      height: 2px;
+      background-color: var(--white);
+      transition: all 0.3s ease-in-out;
+    }
+    
+    .nav-toggle.active .bar:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      background-color: var(--gold);
+    }
+    
+    .nav-toggle.active .bar:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .nav-toggle.active .bar:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      background-color: var(--gold);
+    }
+    
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 280px;
+      height: 100vh;
+      background: rgba(11, 11, 13, 0.95);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-left: 1px solid var(--border);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 2.5rem;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.85, 0, 0.15, 1);
+    }
+    
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+    
+    .mobile-links {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    
+    .mobile-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    
+    .mobile-links a:hover {
+      color: var(--goldb);
+    }
+
+    .hud-cockpit-grid {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 2rem;
+    }
+
     @media(max-width:900px) {
+      /* Reset cursor for mobile touchscreens */
+      body, a, button, .proj-card, .sk-cat, .goal-card, .friend-row, .csubmit, .gal-item {
+        cursor: auto !important;
+      }
+      
+      #cur, #cur2 {
+        display: none !important;
+      }
+
+      /* Disable heavy background light animations on mobile to increase scroll speed */
+      .ambient-light-1, .ambient-light-2 {
+        animation: none !important;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
       .hero {
         flex-direction: column;
         gap: 3rem;
         padding-top: 7rem;
         text-align: center
+      }
+
+      .hero-name-cinematic {
+        font-size: clamp(2.2rem, 8vw, 4.2rem) !important;
       }
 
       .hero-img-col {
@@ -1805,6 +1915,21 @@
       .resume-grid,
       .contact-grid {
         grid-template-columns: 1fr
+      }
+
+      .proj-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      .hud-cockpit-grid {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+        padding: 1.5rem 1rem !important;
+      }
+
+      .cform input,
+      .cform textarea {
+        font-size: 16px !important;
       }
 
       .friends-list {
@@ -1950,7 +2075,23 @@
       <li><a href="#friends">Crew</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle Navigation">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
   </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <ul class="mobile-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#resume">Resume</a></li>
+      <li><a href="#friends">Crew</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
 
   <!-- ═══ HERO ═══ -->
   <section class="hero" id="hero">
@@ -2419,8 +2560,8 @@
       <!-- ── AIRBUS HUD DASHBOARD ── -->
       <div class="reveal" style="margin-top: 4rem;">
         <div class="rsec-title">Aerospace Intelligence Exposure // Airbus Defence & Space / Eye in the Sky</div>
-        <div class="hud-box" style="padding: 2rem; margin-top: 1.5rem; border-color: rgba(199, 168, 107, 0.25);">
-          <div class="hud-box-inner" style="display: grid; grid-template-columns: 3fr 2fr; gap: 3rem; align-items: center;">
+        <div class="hud-box" style="margin-top: 1.5rem; border-color: rgba(199, 168, 107, 0.25);">
+          <div class="hud-box-inner hud-cockpit-grid">
             <div>
               <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.5rem;">
                 COCKPIT MISSION OVERVIEW
@@ -2905,6 +3046,25 @@
 
     // ── FORM ──
     function handleSubmit(b) { b.textContent = 'Message sent! ✓'; b.style.background = 'linear-gradient(135deg,#c7a86b,#f1d29a)'; b.style.color = '#0a0a0c'; setTimeout(() => { b.textContent = 'Send Message →'; b.style.background = ''; b.style.color = '' }, 3000) }
+
+    // ── MOBILE NAVIGATION ──
+    const navToggle = document.getElementById('navToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuLinks = document.querySelectorAll('.mobile-links a');
+
+    if (navToggle && mobileMenu) {
+      navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+      });
+
+      mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          navToggle.classList.remove('active');
+          mobileMenu.classList.remove('active');
+        });
+      });
+    }
   </script>
 </body>
 
